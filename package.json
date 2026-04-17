@@ -1,0 +1,9 @@
+{
+  "name": "zyvarsites-portfolio",
+  "description": "Production deployment folder for ZyvraSites",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "npx -y live-server --port=3000 --entry-file=index.html",
+    "start": "npx -y live-server --port=3000 --entry-file=index.html"
+  }
+}
