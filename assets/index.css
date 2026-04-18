@@ -196,6 +196,14 @@ img {
     height: 320px !important;
     opacity: 0.15 !important;
   }
+
+  #about::before {
+    width: 300px !important;
+    height: 300px !important;
+    top: 35% !important; /* Move higher up for vertical mobile layout */
+    opacity: 0.12 !important;
+    filter: blur(1px) contrast(1.1) brightness(1.05) !important;
+  }
   
   .hero-title {
     font-size: 2.4rem !important;
