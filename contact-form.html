@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us | ZyvraSites</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
+    <!-- EmailJS SDK v4 -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-hover: #4f46e5;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --ring: rgba(99, 102, 241, 0.2);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .contact-container {
+            width: 100%;
+            max-width: 500px;
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 24px;
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.05), 0 10px 10px -5px rgba(0,0,0,0.04);
+            border: 1px solid var(--border);
+            transition: var(--transition);
+        }
+
+        .contact-container:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 25px 30px -5px rgba(0,0,0,0.08);
+        }
+
+        .header { text-align: center; margin-bottom: 32px; }
+        .header h1 { font-size: 2.25rem; font-weight: 800; color: var(--text-main); margin-bottom: 8px; }
+        .header p { color: var(--text-muted); font-size: 1.1rem; }
+
+        .form-group { margin-bottom: 24px; position: relative; }
+        .form-group label { display: block; font-weight: 600; font-size: 0.875rem; color: var(--text-main); margin-bottom: 8px; transition: var(--transition); }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 18px;
+            border-radius: 14px;
+            border: 2px solid var(--border);
+            font-size: 1rem;
+            font-family: inherit;
+            transition: var(--transition);
+            background: #fafafa;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: white;
+            box-shadow: 0 0 0 4px var(--ring);
+        }
+
+        textarea.form-control { min-height: 120px; resize: none; }
+
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            border-radius: 14px;
+            border: none;
+            background: var(--primary);
+            color: white;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 12px;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .submit-btn:hover { background: var(--primary-hover); transform: scale(1.02); }
+        .submit-btn:active { transform: scale(0.98); }
+        .submit-btn:disabled { background: var(--text-muted); cursor: not-allowed; transform: none; }
+
+        .status-msg {
+            margin-top: 24px;
+            padding: 14px;
+            border-radius: 12px;
+            text-align: center;
+            display: none;
+            font-weight: 600;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .status-success { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; display: block; }
+        .status-error { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; display: block; }
+
+        .debug-panel {
+            margin-top: 40px;
+            padding: 20px;
+            background: #fff1f2;
+            border-radius: 16px;
+            border: 2px dashed #fb7185;
+            text-align: center;
+            width: 100%;
+            max-width: 500px;
+        }
+        .debug-panel p { font-size: 0.85rem; color: #e11d48; margin-bottom: 12px; font-weight: 600; }
+        .debug-btn {
+            background: #fb7185;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+        .debug-btn:hover { background: #e11d48; transform: translateY(-2px); }
+    </style>
+</head>
+<body>
+
+    <div class="contact-container">
+        <div class="header">
+            <h1>Contact Us</h1>
+            <p>We'd love to hear from you!</p>
+        </div>
+
+        <form id="contact-form">
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" name="name" id="name" class="form-control" placeholder="John Doe" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" name="email" id="email" class="form-control" placeholder="john@example.com" required>
+            </div>
+
+            <div class="form-group">
+                <label for="subject">Subject</label>
+                <input type="text" name="subject" id="subject" class="form-control" placeholder="Project Inquiry" required>
+            </div>
+
+            <div class="form-group">
+                <label for="message">Your Message</label>
+                <textarea name="message" id="message" class="form-control" placeholder="How can we help you?" required></textarea>
+            </div>
+
+            <button type="submit" id="submit-btn" class="submit-btn">
+                <span id="btn-text">Send Message</span>
+            </button>
+            
+            <div id="status-msg" class="status-msg"></div>
+        </form>
+    </div>
+
+    <!-- Contact Form Section -->
+
+    <script type="text/javascript">
+        // 1. Initial State Check
+        document.addEventListener("DOMContentLoaded", function() {
+            console.log("JS Loaded ✅");
+
+            // 2. EmailJS Configuration
+            // IMPORTANT: These IDs must be exactly as they appear in your EmailJS Dashboard
+            const PUBLIC_KEY = "9SybhA2da93ikIGXf";
+            const SERVICE_ID = "service_3wy2uji";
+            const TEMPLATE_ID = "template_du9ytqo";
+
+            // Initialize EmailJS (Backup initialization)
+            if (typeof emailjs !== "undefined") {
+                emailjs.init({
+                    publicKey: PUBLIC_KEY,
+                });
+                console.log("EmailJS Initialized");
+            } else {
+                console.error("EmailJS SDK not found!");
+                return;
+            }
+
+            // 3. Select Elements
+            const contactForm = document.getElementById("contact-form");
+            const submitBtn = document.getElementById("submit-btn");
+            const btnText = document.getElementById("btn-text");
+            const statusMsg = document.getElementById("status-msg");
+            const manualBtn = document.getElementById("manual-test-btn");
+
+            // 4. Form Submit Logic
+            if (contactForm) {
+                contactForm.addEventListener("submit", function(event) {
+                    event.preventDefault();
+                    console.log("Form Submitted 🚀");
+
+                    // UI Loading State
+                    if (submitBtn) submitBtn.disabled = true;
+                    if (btnText) btnText.innerText = "Sending...";
+                    if (statusMsg) {
+                        statusMsg.style.display = "none";
+                        statusMsg.className = "status-msg";
+                    }
+
+                    // Send Form - Explicitly passing publicKey in options for v4
+                    emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, contactForm, {
+                        publicKey: PUBLIC_KEY
+                    })
+                    .then(function(response) {
+                        console.log("SUCCESS 200");
+                        if (statusMsg) {
+                            statusMsg.innerText = "✅ Message sent successfully!";
+                            statusMsg.className = "status-msg status-success";
+                        }
+                        contactForm.reset();
+                    }, function(error) {
+                        console.log("ERROR");
+                        console.error("EmailJS Error Object:", error);
+                        if (statusMsg) {
+                            // Display the specific error message from EmailJS
+                            const errorDetail = error.text || error.message || "Check your EmailJS credentials.";
+                            statusMsg.innerText = "❌ Error: " + errorDetail;
+                            statusMsg.className = "status-msg status-error";
+                        }
+                    })
+                    .finally(function() {
+                        if (submitBtn) submitBtn.disabled = false;
+                        if (btnText) btnText.innerText = "Send Message";
+                    });
+                });
+            }
+
+        });
+    </script>
+
+</body>
+</html>
